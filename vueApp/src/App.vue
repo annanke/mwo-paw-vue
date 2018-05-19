@@ -1,22 +1,14 @@
 <template>
   <div id="app">
-    <!--<h1>Twój e-mail to {{ email.length }}</h1>.
-    <h1>Twój e-mail to {{ email.toLowerCase() }}</h1>.
-    <div v-if="email.length < 10">Ale masz krótki adres!</div>
-    <div v-else-if="email.length < 15">Twój adres e-mail jest w sam raz.</div>
-    <div v-else>Twój adres e-mail jest stanowczo za długi.</div>
-    <input type="email" v-model="email">  dyrektywy v model z vue 
-    <button @click="alertMyEmail()">Wyświetl mój e-mail w alercie</button>
-    -->
+
     <h1>Witaj w systemi do zapisow na zajecia</h1>.
-    <div v-if="zalogowany">
-      <p>Witaj {{ email }} </p> 
-      <button @click="logout()"> Wyloguj</button>        
+    <div v-if="!authenticatedEmail">
+      <login-form @login="logMeIn($event)" :button-label="'Wejdź'"></login-form>
+      <login-form @login="logMeIn($event)" :button-label="'zaloguj'"></login-form>
     </div>
     <div v-else>
-      <p>zaloguj sie emailem: </p>
-      <input type="email" v-model="email"> 
-      <button @click="LogIn()">Wchodze</button>
+      <p>Witaj {{ authenticatedEmail }} </p> 
+      <button @click="logout()"> Wyloguj</button>      
     </div>
 
   </div>
@@ -24,23 +16,24 @@
 
 <script>
 import "milligram";
+import LoginForm from "./LoginForm";
 export default {
+  components: {LoginForm},
   name: 'app',
   data () {
     return {
-      email: 'amm3@wp.pl', // komponent ma jakis stan i na podstawi tego wyswietla go w templaciei
-      zalogowany : false
+
+      authenticatedEmail : ''
     }
    },
    methods: {
-      alertMyEmail() {
-      alert(this.email);
-      },
-      LogIn(){
-        this.zalogowany = true;
-      },
+
       logout(){
-        this.zalogowany = false;
+        this.authenticatedEmail = '';
+      },
+      logMeIn(email) {
+          this.authenticatedEmail = email;
+          
       }
   }
 
